@@ -26,6 +26,7 @@ namespace csharp_sample.Job
 
     internal class WordCountProcessor : IJobExecuter
     {
+        // await를 이용하여 비동기 예시
         async Task<IJobResult> IJobExecuter.RunInternal(string input)
         {
             var splitted = await Task.Run(() => WordSplitJob.Do(input));
@@ -36,6 +37,7 @@ namespace csharp_sample.Job
 
     internal class ShowCommandProcessor : IJobExecuter
     {
+        // await 없이 동기 예시
         async Task<IJobResult> IJobExecuter.RunInternal(string input)
         {
             return new ShowConsoleResult(ShowConsoleResult.ShowType.ShowCount);

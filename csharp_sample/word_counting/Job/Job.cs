@@ -18,6 +18,7 @@ namespace csharp_sample.Job
 
     internal static class WordGroupingJob
     {
+        // Linq Sample
         internal static IEnumerable<KeyValuePair<string, int>> Do(string[] input)
         {
             return input
