@@ -14,7 +14,6 @@ namespace csharp_sample
 
             input.Join();
             output.Join();
-            return;
         }
     }
 }
