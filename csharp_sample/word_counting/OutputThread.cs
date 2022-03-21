@@ -42,7 +42,24 @@ namespace csharp_sample
                 if (attribute != null)
                 {
                     var paramExpr = Expression.Parameter(typeof(IJobResult));
-                    var callExpr = Expression.Call(method, Expression.TypeAs(paramExpr, attribute.TargetType));
+                    
+                    Expression callExpr = null;
+                    if (method.GetParameters().Length == 0)
+                    {
+                        callExpr = Expression.Call(method);
+                    }
+                    else if (method.GetParameters().Length == 1)
+                    {
+                        if (method.GetParameters()[0].ParameterType == attribute.TargetType)
+                        {
+                            callExpr = Expression.Call(method, Expression.TypeAs(paramExpr, attribute.TargetType));
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid Method Parameters Type");
+                    }
+
                     var func = Expression.Lambda<Action<IJobResult>>(
                         callExpr,
                         paramExpr
@@ -110,14 +127,11 @@ namespace csharp_sample
         }
 
         [OutputFunc(typeof(ShowConsoleResult))]
-        internal static void ShowConsole(ShowConsoleResult result)
+        internal static void ShowConsole()
         {
-            if (result.Type == ShowConsoleResult.ShowType.ShowCount)
+            foreach (var pair in WordCount)
             {
-                foreach (var pair in WordCount)
-                {
-                    Console.WriteLine($"{pair.Key} / {pair.Value}");
-                }
+                Console.WriteLine($"{pair.Key} / {pair.Value}");
             }
         }
     }
