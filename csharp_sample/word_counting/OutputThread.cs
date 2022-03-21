@@ -55,17 +55,19 @@ namespace csharp_sample
                             callExpr = Expression.Call(method, Expression.TypeAs(paramExpr, attribute.TargetType));
                         }
                     }
+
+                    if (callExpr != null)
+                    {
+                        var func = Expression.Lambda<Action<IJobResult>>(
+                            callExpr,
+                            paramExpr
+                            ).Compile();
+                        JobBuilder[attribute.TargetType] = func;
+                    }
                     else
                     {
                         throw new Exception("Invalid Method Parameters Type");
                     }
-
-                    var func = Expression.Lambda<Action<IJobResult>>(
-                        callExpr,
-                        paramExpr
-                        ).Compile();
-
-                    JobBuilder[attribute.TargetType] = func;
                 }
             }
         }
