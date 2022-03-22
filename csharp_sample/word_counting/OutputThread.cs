@@ -75,7 +75,6 @@ namespace csharp_sample
         internal static void OnResult(IJobResult result)
         {
             OutputQueue.Enqueue(result);
-            Signal.Set();
         }
 
         internal static void Exit()
@@ -93,8 +92,7 @@ namespace csharp_sample
             {
                 if (OutputQueue.TryDequeue(out var result) == false)
                 {
-                    // 작업이 없을 때는 이벤트 수신까지 잠수합니다.
-                    Signal.WaitOne(); 
+                    Signal.WaitOne(100);
                     continue;
                 }
 
