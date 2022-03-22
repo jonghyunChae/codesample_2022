@@ -87,15 +87,18 @@ namespace csharp_sample
         {
             Console.WriteLine("Output Thread = " + Thread.CurrentThread.ManagedThreadId);
             Running = true;
-            
+
+            int delay = 10;
             while (Running)
             {
                 if (OutputQueue.TryDequeue(out var result) == false)
                 {
-                    Signal.WaitOne(100);
+                    delay = Math.Max(delay + 10, 100);
+                    Signal.WaitOne(delay);
                     continue;
                 }
 
+                delay = 10;
                 if (JobBuilder.TryGetValue(result.GetType(), out var func))
                 {
                     func(result);
