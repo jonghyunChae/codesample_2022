@@ -93,7 +93,7 @@ namespace csharp_sample
             {
                 if (OutputQueue.TryDequeue(out var result) == false)
                 {
-                    delay = Math.Max(delay + 10, 100);
+                    delay = Math.Min(delay + 10, 100);
                     Signal.WaitOne(delay);
                     continue;
                 }
