@@ -23,6 +23,7 @@ namespace csharp_sample.Job
         {
             return input
                 .GroupBy(x => x)
+                .Where(x => string.IsNullOrEmpty(x.Key) == false)
                 .Select(x => new KeyValuePair<string, int>(x.Key, x.Count()));
         }
     }

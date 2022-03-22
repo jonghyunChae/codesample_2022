@@ -26,11 +26,11 @@ namespace csharp_sample.Job
 
     internal class WordCountProcessor : IJobExecuter
     {
-        // await를 이용하여 비동기 예시
         async Task<IJobResult> IJobExecuter.RunInternal(string input)
         {
+            // await를 이용하여 비동기 예시
             var splitted = await Task.Run(() => WordSplitJob.Do(input));
-            var grouping = await Task.Run(() => WordGroupingJob.Do(splitted));
+            var grouping = WordGroupingJob.Do(splitted);
             return new WordCountResult(grouping.ToDictionary(x => x.Key, x => x.Value));
         }
     }
